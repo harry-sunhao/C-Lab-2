@@ -2,6 +2,7 @@
   Lab 2(Data Lab  - Pointers)
  *
  * <PLEASE REPLACE THIS LINE WITH YOUR NAME AND STUDENT USERNAME>
+ * Name: Hao Sun, Student Username: hsa117
  *
  * pointer.c - Source file with your solutions to the Lab.
  *             This is the file you will hand in to your instructor.
@@ -110,9 +111,12 @@ int intSize() {
   int intArray[10];
   int *intPtr1;
   int *intPtr2;
+  intPtr1 = intArray;
+  intPtr2 = intArray + 1;
+  int address = intPtr1;
+  int address1 = intPtr2;
   // Write code to compute size of an integer.
-
-  return 2;
+  return address1 - address;
 }
 
 /*
@@ -134,8 +138,11 @@ int doubleSize() {
   double *doubPtr1;
   double *doubPtr2;
   // Write code to compute size of a double.
-
-  return 2;
+  doubPtr1 = doubArray;
+  doubPtr2 = doubArray + 1;
+  int address = doubPtr1;
+  int address1 = doubPtr2;
+  return address1 - address;
 }
 
 /*
@@ -157,8 +164,11 @@ int pointerSize() {
   double **ptrPtr1;
   double **ptrPtr2;
   // Write code to compute size of a pointer.
-
-  return 2;
+  ptrPtr1 = ptrArray;
+  ptrPtr2 = ptrArray + 1;
+  int address = ptrPtr1;
+  int address1 = ptrPtr2;
+  return address1 - address;
 }
 
 /*
@@ -178,6 +188,9 @@ int pointerSize() {
  */
 void swapInts(int *ptr1, int *ptr2) {
   // Your code here
+  int temp = *ptr1;
+  *ptr1 = *ptr2;
+  *ptr2 = temp;
 }
 
 /*
@@ -200,7 +213,9 @@ int changeValue() {
   int *intPtr1 = intArray;
   // Remember not to use constants greater than 255.
   // Remember to use * to dereference. You cannot use '[<index>]' syntax.
-
+  int value = 255;
+  value = value + 40;
+  *(intPtr1 + 5) = value;
   return intArray[5];
 }
 
@@ -222,8 +237,11 @@ int changeValue() {
  *   Unary integer operators: -
  */
 int withinSameBlock(int *ptr1, int *ptr2) {
+  int temp = (1 << 31) >> 25;
+  int a = ptr1;
+  int b = ptr2;
   // Your code here
-  return 2;
+  return (a & temp) == (b & temp);
 }
 
 /*
@@ -246,8 +264,20 @@ int withinSameBlock(int *ptr1, int *ptr2) {
  *   Unary integer operators: -
  */
 int withinArray(int *intArray, int size, int *ptr) {
+  if(size == 1)
+  {
+    return intArray == ptr;
+  }
+  if (intArray == ptr)
+  {
+    return 1;
+  }
+  else
+  {
+    return withinArray(intArray+1,size - 1,ptr);
+  }
+  
   // Your code here
-  return 2;
 }
 
 /*
@@ -269,7 +299,13 @@ int withinArray(int *intArray, int size, int *ptr) {
  */
 int stringLength(char *s) {
   // Your code here
-  return 2;
+  int count = 0;
+  while(*s != '\0')
+  {
+    count++;
+    s++;
+  }
+  return count;
 }
 
 /*
@@ -297,6 +333,13 @@ int stringLength(char *s) {
  */
 int endianExperiment(int *ptr) {
   char *bytePtr;
+  //295295
+  // 00 04 81 7F
+  bytePtr = (char * ) ptr;
+  *(bytePtr++) = 0x7F;
+  *(bytePtr++) = 0x81;
+  *(bytePtr++) = 0x04;
+  *(bytePtr++) = 0x00;
   // Your code here
   return *ptr;
 }
@@ -358,9 +401,19 @@ of bounds!
 int smallest_idx(int *arr, int len) {
   int i;
   int smallest_i = 0;
-  int smallest = arr[0];
+  int smallest = *arr;
 
   // TODO: implement me using a for loop.
+  for (i = 0; i < len; i++)
+  {
+      if (smallest > *(arr+i))
+      {
+        smallest = *(arr+i);
+        smallest_i = i;
+      }
+      
+  }
+  
 
   return smallest_i;
 }
